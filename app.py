@@ -5,9 +5,7 @@ AI Strength Tracker - Main Streamlit Application
 A comprehensive AI-powered strength tracking system for gym enthusiasts.
 Features workout tracking, nutrition monitoring, AI predictions, and fatigue analysis.
 
-Author: Claude AI Assistant
-Date: September 2025
-"""
+
 
 import streamlit as st
 import pandas as pd

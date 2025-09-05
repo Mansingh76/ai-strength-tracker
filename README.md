@@ -1,5 +1,6 @@
-💪 AI STRENGTH TRACKER
-“Track. Predict. Progress — Your intelligent strength companion.”
+# 💪 AI Strength Tracker  
+**“Track. Predict. Progress — Your intelligent strength companion.”**
+
 
 ## 🚀 Access Options
 

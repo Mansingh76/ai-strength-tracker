@@ -9,9 +9,7 @@ Features include:
 - Recovery status assessment
 - Training readiness indicators
 
-Author: Claude AI Assistant
-Date: September 2025
-"""
+
 
 import pandas as pd
 import numpy as np

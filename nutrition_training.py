@@ -8,9 +8,6 @@ This module handles all nutrition-related operations including:
 - Calculating nutrition statistics
 - Data persistence using CSV files
 
-Author: Claude AI Assistant
-Date: September 2025
-"""
 
 import pandas as pd
 import os

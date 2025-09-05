@@ -1,8 +1,15 @@
+💪 AI Strength Tracker
+## 🚀 Access Options
 
+### Live Demos
+- 🌐 **Hugging Face Spaces** - *Coming Soon* | Permanent hosted version
+- 🔗 **[Codespace Instance](https://potential-potato-v647rwr456cx7jp-8503.app.github.dev/#12ad4b26)** - Current live demo
 
-# 💪 AI Strength Tracker
+### Deploy Your Own  
+- 📦 **[GitHub Codespaces](https://codespaces.new/YOUR_USERNAME/ai-strength-tracker)** - One-click cloud deployment
+- 💻 **Local Setup** - `pip install -r requirements.txt` → `streamlit run app.py`
 
-🌐 **Live Demo:** [Try it on Hugging Face](https://huggingface.co/spaces/YOUR_USERNAME/ai-strength-tracker)
+*Codespace links are temporary and change when restarted*
 
 > 🚀 An AI-powered dashboard to track workouts, nutrition, fatigue, and progress.
 

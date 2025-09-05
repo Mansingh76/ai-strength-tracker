@@ -8,9 +8,7 @@ This module handles all workout-related operations including:
 - Managing workout history
 - Data persistence using CSV files
 
-Author: Claude AI Assistant
-Date: September 2025
-"""
+
 
 import pandas as pd
 import os

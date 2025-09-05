@@ -6,12 +6,10 @@ This module handles all workout-related operations including:
 - Adding new workout entries
 - Retrieving user workout data
 - Managing workout history
-- Data persistence using CSV files
-
-
+- Data persistence using in-memory storage for Streamlit Cloud
+"""
 
 import pandas as pd
-import os
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
 
@@ -21,63 +19,16 @@ class WorkoutTracker:
     
     Features:
     - Multi-user support
-    - Persistent CSV storage
+    - In-memory storage (Streamlit Cloud compatible)
     - Workout history retrieval
     - Data validation
     """
     
-    def __init__(self, data_file: str = "data/workouts.csv"):
+    def __init__(self):
         """
-        Initialize the WorkoutTracker.
-        
-        Args:
-            data_file (str): Path to the CSV file for storing workout data
+        Initialize the WorkoutTracker with empty DataFrame.
         """
-        self.data_file = data_file
-        self.workouts_df = self._load_data()
-    
-    def _load_data(self) -> pd.DataFrame:
-        """
-        Load workout data from CSV file or create empty DataFrame.
-        
-        Returns:
-            pd.DataFrame: Workout data with required columns
-        """
-        try:
-            if os.path.exists(self.data_file):
-                df = pd.read_csv(self.data_file)
-                # Ensure all required columns exist
-                required_columns = ['user', 'date', 'exercise', 'sets', 'reps', 'weight', 'rpe']
-                for col in required_columns:
-                    if col not in df.columns:
-                        df[col] = None
-                return df
-            else:
-                # Create empty DataFrame with required columns
-                return pd.DataFrame(columns=['user', 'date', 'exercise', 'sets', 'reps', 'weight', 'rpe'])
-        
-        except Exception as e:
-            print(f"Error loading workout data: {e}")
-            return pd.DataFrame(columns=['user', 'date', 'exercise', 'sets', 'reps', 'weight', 'rpe'])
-    
-    def _save_data(self) -> bool:
-        """
-        Save workout data to CSV file.
-        
-        Returns:
-            bool: True if successful, False otherwise
-        """
-        try:
-            # Ensure directory exists
-            os.makedirs(os.path.dirname(self.data_file), exist_ok=True)
-            
-            # Save to CSV
-            self.workouts_df.to_csv(self.data_file, index=False)
-            return True
-        
-        except Exception as e:
-            print(f"Error saving workout data: {e}")
-            return False
+        self.workouts_df = pd.DataFrame(columns=['user', 'date', 'exercise', 'sets', 'reps', 'weight', 'rpe'])
     
     def add_workout(self, user: str, date: str, exercise: str, sets: int, 
                    reps: int, weight: float, rpe: int) -> bool:
@@ -117,8 +68,7 @@ class WorkoutTracker:
             new_row = pd.DataFrame([new_workout])
             self.workouts_df = pd.concat([self.workouts_df, new_row], ignore_index=True)
             
-            # Save to file
-            return self._save_data()
+            return True
         
         except Exception as e:
             print(f"Error adding workout: {e}")
@@ -396,7 +346,7 @@ class WorkoutTracker:
             if not self.workouts_df[mask].empty:
                 # Remove the workout
                 self.workouts_df = self.workouts_df[~mask]
-                return self._save_data()
+                return True
             else:
                 print("Workout not found")
                 return False
@@ -448,43 +398,10 @@ class WorkoutTracker:
                 if rpe is not None:
                     self.workouts_df.loc[idx, 'rpe'] = int(rpe)
             
-            return self._save_data()
-        
-        except Exception as e:
-            print(f"Error updating workout: {e}")
-            return False
-    
-    def export_user_data(self, user: str, filename: str = None) -> bool:
-        """
-        Export user's workout data to CSV file.
-        
-        Args:
-            user (str): User name
-            filename (str, optional): Output filename
-        
-        Returns:
-            bool: True if export was successful
-        """
-        try:
-            user_workouts = self.get_user_workouts(user)
-            
-            if user_workouts.empty:
-                print(f"No workout data found for user: {user}")
-                return False
-            
-            if filename is None:
-                filename = f"data/{user.replace(' ', '_')}_workouts.csv"
-            
-            # Ensure directory exists
-            os.makedirs(os.path.dirname(filename), exist_ok=True)
-            
-            # Export to CSV
-            user_workouts.to_csv(filename, index=False)
-            print(f"Data exported to: {filename}")
             return True
         
         except Exception as e:
-            print(f"Error exporting user data: {e}")
+            print(f"Error updating workout: {e}")
             return False
     
     def get_workout_volume(self, user: str, days: int = 7) -> Dict:
@@ -523,17 +440,3 @@ class WorkoutTracker:
         except Exception as e:
             print(f"Error calculating workout volume: {e}")
             return {}
-    
-    def refresh_data(self) -> bool:
-        """
-        Refresh workout data from file (useful for concurrent access).
-        
-        Returns:
-            bool: True if refresh was successful
-        """
-        try:
-            self.workouts_df = self._load_data()
-            return True
-        except Exception as e:
-            print(f"Error refreshing data: {e}")
-            return False

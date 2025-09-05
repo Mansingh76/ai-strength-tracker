@@ -20,7 +20,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_absolute_error
 import warnings
 from typing import Dict, List, Optional, Tuple
-from workout_tracking import WorkoutTracker
+# from workout_tracking import WorkoutTracker
 
 warnings.filterwarnings('ignore')
 
@@ -42,7 +42,7 @@ class AIPredictor:
         Args:
             workout_tracker (WorkoutTracker, optional): Workout tracker instance
         """
-        self.workout_tracker = workout_tracker or WorkoutTracker()
+        self.workout_tracker = workout_tracker
         self.models = {}  # Store trained models for each user-exercise combination
         self.model_metrics = {}  # Store model performance metrics
     
